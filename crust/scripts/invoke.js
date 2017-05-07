@@ -82,12 +82,18 @@ $(document).ready(() => {
         failures.forEach(record => {
             if (record.type === "childList") {
                 if (record.addedNodes && (record.addedNodes.length > 0 && record.addedNodes[0].className === "page-wrapper")) {
-                    const images = $(record.addedNodes[0]).find("iframe");
-                    if (images.length > 0) {
-                        images[0].onload = function() {
-                            click($(this));
-                        };
+                    const images = $(record.addedNodes[0]).find("div .page");
+                    if(images.length > 0) {
+                        var pageNo = images.attr("page_no");
+                        var iFrameString = "<iframe src='build/renders/page-"+pageNo+".html'></iframe>";
+                        $(iFrameString).appendTo(images);
                     }
+                    // const images = $(record.addedNodes[0]).find("iframe");
+                    // if (images.length > 0) {
+                    //     images[0].onload = function() {
+                    //         click($(this));
+                    //     };
+                    // }
                 }
             }
         });
@@ -107,19 +113,19 @@ $(document).ready(() => {
     }
 
     const id = $("#bookname").val();
-    
+
     const s = Cookies.get(`${id}`);
-    
+
     const page = $superbook.turn("page");
     const views = $superbook.turn("view");
-    
+
     $superbook.turn("page", s);
-    
+
     $superbook.bind("turned", (dataAndEvents, m1, deepDataAndEvents) => {
         Cookies.remove(`${id}`);
         Cookies.set(`${id}`, parseInt(m1));
     });
-    
+
     if (Turn.isTouchDevice) {
         $("body .ui-arrow-next-page").on("tap", dataAndEvents => {
             $superbook.turn("next");

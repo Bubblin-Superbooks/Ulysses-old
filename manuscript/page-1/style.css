@@ -1,0 +1,6 @@
+body {
+    background-image: url(https://raw.githubusercontent.com/marvindanig/Ulysses/master/cover/front.jpg);
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+}
